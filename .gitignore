@@ -13,6 +13,10 @@ Microsoft Visual Studio/
 *.userosscache
 *.sln.docstates
 
+# JetBrains
+.idea/
+*.iml
+
 # C/C++ build artifacts
 *.exe
 *.dll
@@ -27,6 +31,20 @@ Microsoft Visual Studio/
 *.class
 *.log
 
+# C/C++ common build folders (CMake/Make)
+build/
+bin/
+obj/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+*.ilk
+*.exp
+*.map
+Debug/
+Release/
+
 # Competitive programming outputs / temp folders
 **/output/
 **/Outputs/
@@ -40,6 +58,9 @@ __pycache__/
 *.pyd
 .venv/
 venv/
+
+# Jupyter
+.ipynb_checkpoints/
 
 # ML / large artifacts
 saved_model/
