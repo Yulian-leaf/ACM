@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+#define Endl "\n"
+typedef long long ll;
+typedef unsigned long long ull;
+using namespace std;
+
+inline void read(int &a) {
+	int s = 0, w = 1;
+	char ch = getchar();
+	while (ch < '0' || ch > '9') {
+		if (ch == '-')
+			w = -1;
+		ch = getchar();
+	}
+	while (ch >= '0' && ch <= '9') {
+		s = s * 10 + ch - '0';
+		ch = getchar();
+	}
+	a = s * w;
+}
+
+void slove() {
+	int a, b;
+	cin >> a >> b;
+	long double gold = (sqrtl(5) + 1) / 2;
+	long double te = abs(a - b);
+	int cep = int(gold * te);
+	if (cep == min(a, b))
+		cout << 0 << Endl;//lost
+	else
+		cout << 1 << Endl;//win
+}
+
+//pre
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+	int T = 1;
+	//cin >> T;
+	while (T--) {
+		slove();
+	}
+	return 0;
+}

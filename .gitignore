@@ -1,0 +1,58 @@
+# OS / Editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# VS Code / Visual Studio
+.vscode/
+.vs/
+Microsoft VS Code/
+Microsoft Visual Studio/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# C/C++ build artifacts
+*.exe
+*.dll
+*.pdb
+*.obj
+*.o
+*.a
+*.lib
+*.so
+*.dylib
+*.out
+*.class
+*.log
+
+# Competitive programming outputs / temp folders
+**/output/
+**/Outputs/
+**/Tests/
+.cph/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# ML / large artifacts
+saved_model/
+*.safetensors
+*.pt
+*.pth
+*.onnx
+*.bin
+
+# Archives
+*.zip
+*.7z
+*.rar
+
+# Node
+node_modules/

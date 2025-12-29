@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <title>Yulian's Excel</title>
+</head>
+<body>
+    <p>Yulian's Excel</p>
+    <form action="/" method="post">
+        <!--文本输入框-->
+        <label for="name">User:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <!--secret-->
+        <label for="password">Secret:</label>
+        <input type="password" id="password" name="password" required="111">
+        <br>
+        <!--button-->
+        <label>Sex</label>
+        <input type="radio" id="male" name="gender" value="male" checked>
+        <lavel for="male">man</lavel>
+    <input type="radio" id="female" name="gender" value="female">
+    <label for="female">woman</label>
+
+    <br>
+
+    <!-- 复选框 -->
+    <input type="checkbox" id="subscribe" name="subscribe" checked>
+    <label for="subscribe">subscribe</label>
+
+    <br>
+
+    <!-- 下拉列表 -->
+    <label for="country">Nation:</label>
+    <select id="country" name="country">
+        <option value="cn">CN</option>
+        <option value="usa">USA</option>
+        <option value="uk">UK</option>
+    </select>
+
+    <br>
+
+    <!-- 提交按钮 -->
+    <input type="submit" value="Submit">
+    </form>
+</body>

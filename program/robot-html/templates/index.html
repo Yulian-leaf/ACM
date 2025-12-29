@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>情感识别机器人</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.92);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 800px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .header {
+      background: linear-gradient(to right, #4361ee, #3a0ca3);
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      position: relative;
+    }
+
+    .header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .header p {
+      font-size: 18px;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .robot-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 28px;
+    }
+
+    .input-section {
+      padding: 25px 30px 15px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      resize: none;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #4361ee;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .btn {
+      background: #4361ee;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn:hover {
+      background: #3a0ca3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn i {
+      margin-right: 8px;
+    }
+
+    .result-section {
+      padding: 25px 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+
+    .result-card {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+    }
+
+    .result-card h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      color: #4361ee;
+    }
+
+    .sentiment-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .sentiment-icon {
+      font-size: 40px;
+      margin-right: 15px;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sentiment-text {
+      flex: 1;
+    }
+
+    .sentiment-text h3 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .sentiment-text p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .progress-container {
+      margin-bottom: 15px;
+    }
+
+    .progress-container p {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #666;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-container p span {
+      font-weight: 500;
+      color: #444;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.5s ease;
+    }
+
+    .chart-container {
+      padding: 10px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chart-container img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .chart-container p {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+    }
+
+    .history-section {
+      padding: 25px 30px;
+      background-color: #f8fafc;
+    }
+
+    .history-section h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #4361ee;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-radius: 8px;
+      background: white;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+      border-left: 4px solid;
+      transition: transform 0.3s ease;
+    }
+
+    .history-item:hover {
+      transform: translateX(5px);
+    }
+
+    .history-item .emoji {
+      font-size: 24px;
+      margin-right: 15px;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .history-text {
+      flex: 1;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .history-text span {
+      font-size: 13px;
+      color: #666;
+      font-weight: normal;
+      display: block;
+      margin-top: 5px;
+    }
+
+    .empty-history {
+      text-align: center;
+      padding: 20px;
+      color: #999;
+      font-style: italic;
+    }
+
+    footer {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 20px;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .result-section {
+        flex-direction: column;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .header p {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="robot-icon">🤖</div>
+      <h1>情感识别机器人</h1>
+      <p>输入任何文本，我将分析其中蕴含的情感状态（支持中英文）</p>
+    </div>
+
+    <div class="input-section">
+      <textarea id="inputText" placeholder="在此输入文本，例如：我今天感到非常开心！"></textarea>
+      <button class="btn" id="analyzeBtn"><i class="icon">🔍</i> 分析情感</button>
+    </div>
+
+    <div class="result-section">
+      <div class="result-card">
+        <h2>情感分析结果</h2>
+        <div class="sentiment-container" id="sentimentContainer">
+          <div class="sentiment-icon" id="sentimentIcon">😐</div>
+          <div class="sentiment-text">
+            <h3 id="sentimentText">等待分析...</h3>
+            <p id="subjectivityDesc">输入文本以获取分析结果</p>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <p>情感强度: <span id="strengthValue">0%</span></p>
+          <div class="progress-bar">
+            <div class="progress" id="sentimentProgress" style="width: 0; background-color: #2196F3"></div>
+          </div>
+        </div>
+
+        <div class="progress-container">
+          <p>主观性程度: <span id="subjectivityValue">0%</span></p>
+          <div class="progress-bar">
+            <div class="progress" id="subjectivityProgress" style="width: 0; background-color: #FF9800"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <h2>情感变化趋势</h2>
+        <div class="chart-container">
+          {% if chart_data %}
+          <img src="{{ chart_data }}" alt="情感变化图表">
+          {% else %}
+          <p>分析文本后查看变化趋势</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="history-section">
+      <h2>最近分析记录</h2>
+      <div id="historyContainer">
+        {% for item in sentiment_history|reverse %}
+        <div class="history-item" style="border-left-color: '{{ item.color }}'">
+          <div class="emoji">
+            {% if item['polarity'] > 0.2 %}😊
+            {% elif item['polarity'] < -0.2 %}😠 {% else %}😐 {% endif %} </div>
+              <div class="history-text">
+                {{ item['text'][:40] }}{% if item['text']|length > 40 %}...{% endif %}
+                <span>{{ item['sentiment'] }}</span>
+              </div>
+          </div>
+          {% else %}
+          <div class="empty-history">
+            <p>暂无分析记录，请输入文本并分析</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>情感识别机器人 | 基于TextBlob情感分析 | Python Flask实现</p>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const inputText = document.getElementById('inputText');
+        const sentimentContainer = document.getElementById('sentimentContainer');
+        const sentimentIcon = document.getElementById('sentimentIcon');
+        const sentimentText = document.getElementById('sentimentText');
+        const subjectivityDesc = document.getElementById('subjectivityDesc');
+        const sentimentProgress = document.getElementById('sentimentProgress');
+        const strengthValue = document.getElementById('strengthValue');
+        const subjectivityProgress = document.getElementById('subjectivityProgress');
+        const subjectivityValue = document.getElementById('subjectivityValue');
+        const chartContainer = document.querySelector('.chart-container');
+
+        analyzeBtn.addEventListener('click', function () {
+          const text = inputText.value.trim();
+          if (!text) {
+            alert('请输入要分析的文本内容');
+            return;
+          }
+
+          analyzeBtn.innerHTML = '<i class="icon">⏳</i> 分析中...';
+          analyzeBtn.disabled = true;
+
+          // 发送分析请求
+          fetch('/analyze', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `text=${encodeURIComponent(text)}`
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.error) {
+                alert(data.error);
+                return;
+              }
+
+              const result = data.result;
+
+              // 更新UI显示结果
+              sentimentIcon.textContent = result.polarity > 0.2 ? '😊' :
+                result.polarity < -0.2 ? '😠' : '😐';
+              sentimentText.textContent = result.sentiment;
+              sentimentContainer.style.backgroundColor = '#f8f9fa';
+              sentimentContainer.style.padding = '10px';
+              sentimentContainer.style.borderRadius = '10px';
+
+              // 更新情感强度进度条
+              const strengthWidth = Math.abs(result.polarity) * 100;
+              sentimentProgress.style.width = `${strengthWidth}%`;
+              sentimentProgress.style.backgroundColor = result.color;
+              strengthValue.textContent = `${result.sentiment_strength}%`;
+
+              // 更新主观性进度条
+              const subjWidth = result.subjectivity * 100;
+              subjectivityProgress.style.width = `${subjWidth}%`;
+              subjectivityValue.textContent = `${Math.round(subjWidth)}%`;
+              subjectivityDesc.textContent = `主观性: ${result.subjectivity_desc}`;
+
+              // 更新历史图表
+              if (data.chart_data) {
+                chartContainer.innerHTML = `<img src="${data.chart_data}" alt="情感变化图表">`;
+              }
+
+              // 添加分析历史到列表顶部
+              const historyContainer = document.getElementById('historyContainer');
+              const newHistoryItem = document.createElement('div');
+              newHistoryItem.className = 'history-item';
+              newHistoryItem.style.borderLeftColor = result.color;
+              newHistoryItem.innerHTML = `
+                        <div class="emoji">${sentimentIcon.textContent}</div>
+                        <div class="history-text">
+                            ${text.length > 40 ? text.substring(0, 40) + '...' : text}
+                            <span>${result.sentiment}</span>
+                        </div>
+                    `;
+
+              // 添加新的历史记录到顶部
+              if (historyContainer.children.length > 0 &&
+                !historyContainer.children[0].classList.contains('empty-history')) {
+                historyContainer.insertBefore(newHistoryItem, historyContainer.children[0]);
+              } else {
+                historyContainer.innerHTML = '';
+                historyContainer.appendChild(newHistoryItem);
+              }
+
+              // 清空输入框
+              inputText.value = '';
+            })
+            .catch(error => {
+              console.error('Error:', error);
+              alert('分析时发生错误，请重试');
+            })
+            .finally(() => {
+              analyzeBtn.innerHTML = '<i class="icon">🔍</i> 分析情感';
+              analyzeBtn.disabled = false;
+            });
+        });
+
+        // 允许按Enter键提交
+        inputText.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            analyzeBtn.click();
+          }
+        });
+      });
+    </script>
+</body>
+
+</html>
